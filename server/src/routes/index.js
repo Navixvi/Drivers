@@ -2,11 +2,11 @@ const { Router } = require("express");
 const router = Router();
 
 // Importa los controladores necesarios
-const { getDrivers } = require("../conntrollers/driversController");
-const { getDriverById } = require("../conntrollers/driversById");
-const { getDriversByName } = require("../conntrollers/driversByName");
-const { createDriver } = require("../conntrollers/createDriver");
-const { getTeams } = require("../conntrollers/teamsController");
+const { getDrivers } = require("../controllers/driversController");
+const { getDriverById } = require("../controllers/driversById");
+const { getDriversByName } = require("../controllers/driversByName");
+const { createDriver } = require("../controllers/createDriver");
+const { getTeams } = require("../controllers/teamsController");
 
 
 // Rutas para los conductores
