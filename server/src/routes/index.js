@@ -6,6 +6,7 @@ const { getDrivers } = require("../conntrollers/driversController");
 const { getDriverById } = require("../conntrollers/driversById");
 const { getDriversByName } = require("../conntrollers/driversByName");
 const { createDriver } = require("../conntrollers/createDriver");
+const { getTeams } = require("../conntrollers/teamsController");
 
 
 // Rutas para los conductores
@@ -15,6 +16,6 @@ router.get("/drivers/name", getDriversByName);
 router.post("/drivers", createDriver);
 
 // Ruta para los equipos
-//router.get("/teams", getTeams);
+router.get("/teams", getTeams);
 
 module.exports = router;
