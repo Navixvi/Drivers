@@ -12,7 +12,7 @@ const { getTeams } = require("../controllers/teamsController");
 // Rutas para los conductores
 router.get("/drivers", getDrivers);
 router.get("/drivers/:idDriver", getDriverById);
-router.get("/drivers/name", getDriversByName);
+router.get("/name", getDriversByName);
 router.post("/drivers", createDriver);
 
 // Ruta para los equipos
