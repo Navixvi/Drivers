@@ -15,7 +15,7 @@ async function getDrivers(req, res) {
     const driversWithDefaultImageFromAPI = driversFromAPI.map(driver => ({
       ...driver,
       image: driver.image || {
-        url: 'URL_IMAGEN_POR_DEFECTO',
+        url: 'https://metro.co.uk/wp-content/uploads/2015/06/ad_174020392-e1487698550420.jpg?quality=80&strip=all',
         imageby: 'Autor Desconocido'
       }
     }));
