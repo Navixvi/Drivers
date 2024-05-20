@@ -11,7 +11,7 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
-      <button onClick={handleClick}>Ingresar</button>
+      <button onClick={handleClick}>Ingresar a la pagina de todos los corredores</button>
     </div>
   );
 };

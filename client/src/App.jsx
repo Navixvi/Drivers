@@ -1,13 +1,15 @@
-import './App.css';
+// src/App.jsx
 import React from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import LandingPage from './view/LandingPage';
 
 function App() {
   return (
-    <Routes>
-      <Route path="/" element={<LandingPage />} />
-    </Routes>
+    <div>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+      </Routes>
+    </div>
   );
 }
 

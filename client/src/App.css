@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-image: url('../image/Landing.jpg'); 
+  background-image: url('../src/image/Landing.jpg'); 
   background-size: cover;
   background-position: top center; /* Asegura que la parte superior de la imagen esté siempre visible */
   background-repeat: no-repeat;
