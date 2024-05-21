@@ -5,16 +5,16 @@ const Card = ({ driver }) => {
     const navigate = useNavigate();
   
     const handleClick = () => {
-      navigate(`/driver/${driver.id}`);
+        navigate(`/driver/${driver.id}`);
     };
   
     return (
-      <div className="card" onClick={handleClick}>
-        <img src={driver.image} alt={driver.name} />
-        <h2>{driver.name}</h2>
-        <p>{driver.team}</p>
-      </div>
+        <div className="card" onClick={handleClick}>
+            <img src={driver.image.url} alt={driver.name.forename + ' ' + driver.name.surname} />
+            <h2>{driver.name.forename} {driver.name.surname}</h2>
+            <p>{driver.teams}</p>
+        </div>
     );
-  };
+};
   
-  export default Card;
+export default Card;

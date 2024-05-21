@@ -1,14 +1,22 @@
-// src/redux/reducer.js
+import { FETCH_DRIVERS_SUCCESS } from './action-types';
+
 const initialState = {
-  // Define tu estado inicial aquí
+  drivers: [],
+  loading: false,
+  error: null,
 };
 
-const reducer = (state = initialState, action) => {
+const driverReducer = (state = initialState, action) => {
   switch (action.type) {
-    // Maneja tus acciones aquí
+    case FETCH_DRIVERS_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        drivers: action.payload,
+      };
     default:
       return state;
   }
 };
 
-export default reducer;
+export default driverReducer;
