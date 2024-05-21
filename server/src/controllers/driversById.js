@@ -18,6 +18,9 @@ async function getDriverById(req, res) {
     const response = await axios.get(`http://localhost:5000/drivers/${driverId}`);
     const driverFromAPI = response.data;
 
+    // Desactivar la caché de la respuesta
+    res.setHeader('Cache-Control', 'no-cache');
+
     // Devolver el conductor obtenido de la API
     res.json(driverFromAPI);
   } catch (error) {

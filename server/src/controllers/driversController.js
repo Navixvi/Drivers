@@ -6,7 +6,7 @@ async function getDrivers(req, res) {
   try {
     // Parámetros de consulta para paginación
     const page = parseInt(req.query.page) || 1; // Página solicitada (por defecto, página 1)
-    const limit = parseInt(req.query.limit) || 10; // Tamaño de la página (por defecto, 10 conductores por página)
+    const limit = parseInt(req.query.limit) || 25; // Tamaño de la página (por defecto, 10 conductores por página)
 
     // Calcular el índice de inicio y fin de los conductores a retornar
     const startIndex = (page - 1) * limit;
@@ -23,7 +23,7 @@ async function getDrivers(req, res) {
     const driversWithDefaultImageFromAPI = driversFromAPI.map(driver => ({
       ...driver,
       image: driver.image || {
-        url: 'https://metro.co.uk/wp-content/uploads/2015/06/ad_174020392-e1487698550420.jpg?quality=80&strip=all',
+        url: 'https://media.istockphoto.com/id/1087022094/es/foto/piloto-de-carreras.jpg?s=2048x2048&w=is&k=20&c=xMaW128YdFBW-J6v2qp00Ubd7ERiB54_l4McbDgMZZo=',
         imageby: 'Autor Desconocido'
       }
     }));
