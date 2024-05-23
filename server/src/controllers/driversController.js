@@ -6,7 +6,7 @@ async function getDrivers(req, res) {
   try {
     // Parámetros de consulta para paginación
     const page = parseInt(req.query.page) || 1; // Página solicitada (por defecto, página 1)
-    const limit = parseInt(req.query.limit) || 25; // Tamaño de la página (por defecto, 10 conductores por página)
+    const limit = parseInt(req.query.limit) || 9; // Tamaño de la página (por defecto, 10 conductores por página)
 
     // Calcular el índice de inicio y fin de los conductores a retornar
     const startIndex = (page - 1) * limit;

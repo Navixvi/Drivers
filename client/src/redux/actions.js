@@ -37,3 +37,12 @@ export const fetchDriverById = (id) => {
     }
   };
 };
+
+export const createDriver = (driverData) => async (dispatch) => {
+  try {
+    const response = await axios.post('http://localhost:3001/drivers', driverData);
+    console.log('Driver created successfully:', response.data);
+  } catch (error) {
+    console.error('Error creating driver:', error);
+  }
+};

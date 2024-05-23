@@ -1,12 +1,17 @@
-const { Driver, Team} = require ("../db");
+const { Driver, Team } = require("../db");
+const { v4: uuidv4 } = require('uuid'); // Importar la función uuidv4 para generar UUIDs
 
 async function createDriver(req, res) {
   try {
     // Obtener los datos del cuerpo de la solicitud
     const { name, lastName, dob, nationality, teams, image, description } = req.body;
 
-    // Crear el conductor en la base de datos
+    // Generar un UUID único para el nuevo conductor
+    const driverId = uuidv4();
+
+    // Crear el conductor en la base de datos con el UUID generado
     const newDriver = await Driver.create({
+      id: driverId,
       name,
       lastName,
       birthDate: dob,
