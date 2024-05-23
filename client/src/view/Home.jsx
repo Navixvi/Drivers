@@ -2,13 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchAllDrivers } from '../redux/actions';
 import Card from '../components/Card';
-import NavBar from '../components/NavBar'; // Importar NavBar
+import NavBar from '../components/NavBar';
+import SearchBar from '../components/SearchBar';
 
 const Home = () => {
     const dispatch = useDispatch();
     const { drivers, totalPages, loading, error } = useSelector((state) => state.drivers || { drivers: [], totalPages: 1, loading: false, error: null });
     const [currentPage, setCurrentPage] = useState(1);
-    console.log(drivers);
+    const [filteredDrivers, setFilteredDrivers] = useState([]);
+
     useEffect(() => {
         dispatch(fetchAllDrivers(currentPage));
     }, [dispatch, currentPage]);
@@ -21,16 +23,21 @@ const Home = () => {
         setCurrentPage(prevPage => prevPage + 1);
     };
 
+    useEffect(() => {
+        setFilteredDrivers(drivers);
+    }, [drivers]);
+
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
     
     return (
         <div>
-            <NavBar /> {/* Renderizar NavBar aquí */}
+            <NavBar />
             <div className="home">
                 <h1>Drivers</h1>
+                <SearchBar setDrivers={setFilteredDrivers} />
                 <div className="driver-list">
-                    {drivers && drivers.map((driver) => (
+                    {filteredDrivers && filteredDrivers.map((driver) => (
                         <Card key={driver.id} driver={driver} />
                     ))}
                 </div>
