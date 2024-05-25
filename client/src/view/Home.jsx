@@ -10,10 +10,16 @@ const Home = () => {
     const { drivers, totalPages, loading, error } = useSelector((state) => state.drivers || { drivers: [], totalPages: 1, loading: false, error: null });
     const [currentPage, setCurrentPage] = useState(1);
     const [filteredDrivers, setFilteredDrivers] = useState([]);
+    const [sortBy, setSortBy] = useState('name');
+    const [ascending, setAscending] = useState(true);
 
     useEffect(() => {
         dispatch(fetchAllDrivers(currentPage));
     }, [dispatch, currentPage]);
+
+    useEffect(() => {
+        setFilteredDrivers(drivers);
+    }, [drivers]);
 
     const handlePrevPage = () => {
         setCurrentPage(prevPage => prevPage - 1);
@@ -23,9 +29,28 @@ const Home = () => {
         setCurrentPage(prevPage => prevPage + 1);
     };
 
-    useEffect(() => {
-        setFilteredDrivers(drivers);
-    }, [drivers]);
+    const handleSort = (type) => {
+        if (type === sortBy) {
+            setAscending(prev => !prev);
+        } else {
+            setSortBy(type);
+            setAscending(true);
+        }
+    };
+
+    const sortedDrivers = filteredDrivers && filteredDrivers.length > 0 ? filteredDrivers.sort((a, b) => {
+        if (sortBy === 'name') {
+            const nameA = (a.name && a.name.forename) ? a.name.forename.toLowerCase() : '';
+            const nameB = (b.name && b.name.forename) ? b.name.forename.toLowerCase() : '';
+            return ascending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+        } else if (sortBy === 'dob') {
+            const dobA = (a.dob) ? new Date(a.dob) : null;
+            const dobB = (b.dob) ? new Date(b.dob) : null;
+            return ascending ? dobA - dobB : dobB - dobA;
+        }
+    }) : [];
+    
+    
 
     if (loading) return <p>Loading...</p>;
     if (error) return <p>Error: {error}</p>;
@@ -36,8 +61,12 @@ const Home = () => {
             <div className="home">
                 <h1>Drivers</h1>
                 <SearchBar setDrivers={setFilteredDrivers} />
+                <div>
+                    <button onClick={() => handleSort('name')}>Sort by Name {sortBy === 'name' && (ascending ? '↑' : '↓')}</button>
+                    <button onClick={() => handleSort('dob')}>Sort by DOB {sortBy === 'dob' && (ascending ? '↑' : '↓')}</button>
+                </div>
                 <div className="driver-list">
-                    {filteredDrivers && filteredDrivers.map((driver) => (
+                    {sortedDrivers.map((driver) => (
                         <Card key={driver.id} driver={driver} />
                     ))}
                 </div>

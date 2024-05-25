@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { createDriver } from '../redux/actions';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const CreateForm = () => {
   const [formData, setFormData] = useState({
@@ -15,8 +16,13 @@ const CreateForm = () => {
   });
 
   const [teams, setTeams] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate('/home');
+  };
 
   useEffect(() => {
     fetchTeams();
@@ -26,8 +32,10 @@ const CreateForm = () => {
     try {
       const response = await axios.get('http://localhost:3001/teams');
       setTeams(response.data);
+      setLoading(false);
     } catch (error) {
       console.error('Error fetching teams:', error);
+      setLoading(false);
     }
   };
 
@@ -54,7 +62,7 @@ const CreateForm = () => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
-  
+
   const handleChange = (e) => {
     const { name, value, options } = e.target;
     const newValue = name === 'teams' ? Array.from(options).filter(option => option.selected).map(option => option.value) : value;
@@ -63,7 +71,6 @@ const CreateForm = () => {
       [name]: newValue,
     });
   };
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -71,6 +78,8 @@ const CreateForm = () => {
       dispatch(createDriver(formData));
     }
   };
+
+  if (loading) return <p>Loading...</p>;
 
   return (
     <div className="create-form">
@@ -137,21 +146,22 @@ const CreateForm = () => {
         <div>
           <label>Escuderías</label>
           <select
-  name="teams"
-  value={formData.teams}
-  onChange={handleChange}
-  multiple // Permitir selección múltiple
->
-  {teams.map((team) => (
-    <option key={team.id} value={team.id}>
-      {team.name}
-    </option>
-  ))}
-</select>
+            name="teams"
+            value={formData.teams}
+            onChange={handleChange}
+            multiple
+          >
+            {teams.map((team) => (
+              <option key={team.id} value={team.id}>
+                {team.name}
+              </option>
+            ))}
+          </select>
           {errors.teams && <p className="error">{errors.teams}</p>}
         </div>
         <button type="submit">Crear Conductor</button>
       </form>
+        <button onClick={handleClick}>Volver a Home</button>
     </div>
   );
 };

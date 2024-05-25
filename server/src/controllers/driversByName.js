@@ -17,12 +17,7 @@ const getDriversByName = async (req, res) => {
       driver.name.surname.toLowerCase().includes(name.toLowerCase())
     );
 
-    // Si se encuentran conductores en la API, devolver los resultados filtrados
-    if (filteredApiDrivers.length > 0) {
-      return res.json(filteredApiDrivers);
-    }
-    
-    // Si no se encuentran conductores en la API, buscar en la base de datos
+    // Buscar en la base de datos
     const dbDrivers = await Driver.findAll({
       where: {
         [Op.or]: [
@@ -40,8 +35,11 @@ const getDriversByName = async (req, res) => {
       },
     });
 
-    // Devolver los conductores encontrados en la base de datos
-    return res.json(dbDrivers);
+    // Combinar resultados de la API y la base de datos
+    const combinedDrivers = [...filteredApiDrivers, ...dbDrivers];
+
+    // Devolver todos los resultados combinados
+    return res.json(combinedDrivers);
   } catch (error) {
     console.error('Error in getDriversByName:', error);
     return res.status(500).json({ error: 'Error al buscar conductores por nombre' });

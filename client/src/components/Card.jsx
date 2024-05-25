@@ -23,7 +23,7 @@ const Card = ({ driver }) => {
     <div className="card" onClick={handleClick}>
       <img src={driver.image.url ? driver.image.url : driver.image} alt={`${driver.name.forename || driver.name} ${driver.name.surname || driver.lastName}`} />
       <h2>{`${driver.name.forename || driver.name} ${driver.name.surname || driver.lastName}`}</h2>
-      <p>Equipos:</p>
+      <p>Teams:</p>
       <ul>
         {teams.map((team, index) => (
           <li key={index}>{team}</li>
