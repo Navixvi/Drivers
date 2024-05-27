@@ -25,10 +25,10 @@ async function getTeams(req, res) {
       const uniqueTeams = Array.from(teamsSet);
 
       // Guardar los equipos únicos en la base de datos
-      await Team.bulkCreate(uniqueTeams.map(name => ({ name })));
+      const savedTeams = await Team.bulkCreate(uniqueTeams.map(name => ({ name })));
 
       // Devolver los equipos obtenidos de la API
-      return res.json(uniqueTeams);
+      return res.json(savedTeams);
     } else {
       // La base de datos no está vacía, devolver los equipos almacenados en ella
       return res.json(existingTeams);

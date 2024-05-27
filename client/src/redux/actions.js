@@ -14,10 +14,12 @@ export const fetchDriverSuccess = (driver) => ({
 });
 
 // Acción para obtener todos los conductores con paginación
-export const fetchAllDrivers = (page = 1) => {
+export const fetchAllDrivers = (page = 1, team = '', source = '') => {
   return async (dispatch) => {
     try {
-      const response = await axios.get(`http://localhost:3001/drivers?page=${page}`);
+      const response = await axios.get(`http://localhost:3001/drivers`, {
+        params: { page, team, source },
+      });
       const { drivers, totalPages } = response.data;
       dispatch(fetchDriversSuccess(drivers, totalPages));
     } catch (error) {
