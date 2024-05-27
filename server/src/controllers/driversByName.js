@@ -5,8 +5,13 @@ const { Op } = require('sequelize');
 const getDriversByName = async (req, res) => {
   const { name } = req.query;
 
+  // Validar que el nombre esté presente en la consulta
+  if (!name) {
+    return res.status(400).json({ error: 'El parámetro "name" es requerido' });
+  }
+
   try {
-    // Buscar en la API
+    // Buscar en la API (considera añadir soporte de búsqueda en la API externa si es posible)
     const apiUrl = `http://localhost:5000/drivers`;
     const response = await axios.get(apiUrl);
     const apiDrivers = response.data;
@@ -42,7 +47,13 @@ const getDriversByName = async (req, res) => {
     return res.json(combinedDrivers);
   } catch (error) {
     console.error('Error in getDriversByName:', error);
-    return res.status(500).json({ error: 'Error al buscar conductores por nombre' });
+
+    // Manejar errores específicos de la API
+    if (error.response) {
+      return res.status(error.response.status).json({ error: error.response.data });
+    }
+
+    return res.status(500).json({ error: 'Error interno del servidor' });
   }
 };
 

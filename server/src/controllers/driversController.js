@@ -1,28 +1,31 @@
-const axios = require('axios'); 
-const { Driver } = require("../db");
+const axios = require('axios');
+const { Driver, Team } = require("../db");
 
-// Controlador para obtener todos los conductores
 async function getDrivers(req, res) {
   try {
-    // Parámetros de consulta para paginación y filtrado
-    const page = parseInt(req.query.page) || 1; // Página solicitada 
-    const limit = parseInt(req.query.limit) || 9; // Tamaño de la página 
-    const team = req.query.team || ''; // Filtro por equipo
-    const source = req.query.source || ''; // Filtro por origen (API o DB)
+    const page = parseInt(req.query.page) || 1;
+    const limit = parseInt(req.query.limit) || 9;
+    const team = req.query.team || '';
+    const source = req.query.source || '';
+    let nationality = req.query.nationality || '';
 
-    // Calcular el índice de inicio y fin de los conductores a retornar
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
 
-    // Obtener conductores de la base de datos (con filtro por equipo si se proporciona)
+    // Opciones de consulta para obtener conductores de la base de datos
     const dbOptions = {
       offset: startIndex,
       limit: limit,
-      where: {}
+      include: Team, // Incluir los equipos asociados
+      where: {},
     };
+
+    // Filtrar por equipo si se proporciona
     if (team) {
-      dbOptions.where.team = team;
+      dbOptions.where['$Teams.name$'] = team;
     }
+
+    // Obtener conductores de la base de datos
     const driversFromDB = await Driver.findAll(dbOptions);
 
     // Obtener conductores de la API
@@ -34,16 +37,19 @@ async function getDrivers(req, res) {
       ...driver,
       image: driver.image || {
         url: 'https://media.istockphoto.com/id/1087022094/es/foto/piloto-de-carreras.jpg?s=2048x2048&w=is&k=20&c=xMaW128YdFBW-J6v2qp00Ubd7ERiB54_l4McbDgMZZo=',
-        imageby: 'Autor Desconocido'
+        imageby: 'Autor Desconocido',
       }
     }));
 
     // Filtrar conductores por equipo si se proporciona
     if (team) {
-      driversFromAPI = driversFromAPI.filter(driver => driver.team === team);
+      driversFromAPI = driversFromAPI.filter(driver => driver.teams.includes(team));    
+    }
+    
+    if (nationality) {
+      driversFromAPI = driversFromAPI.filter(driver => driver.nationality.toLowerCase() === nationality.toLowerCase());
     }
 
-    // Combinar conductores de la base de datos y de la API según el filtro de origen
     let allDrivers;
     if (source === 'API') {
       allDrivers = driversFromAPI;
@@ -53,13 +59,9 @@ async function getDrivers(req, res) {
       allDrivers = [...driversFromDB, ...driversFromAPI];
     }
 
-    // Calcular el número total de conductores (para la paginación)
     const totalDrivers = allDrivers.length;
-
-    // Extraer los conductores de la página actual
     const currentDrivers = allDrivers.slice(startIndex, endIndex);
 
-    // Enviar respuesta con los conductores de la página actual y metadatos de paginación
     res.json({
       drivers: currentDrivers,
       totalPages: Math.ceil(totalDrivers / limit),
@@ -67,10 +69,10 @@ async function getDrivers(req, res) {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Error interno del servidor" });
+    res.status(500).json({ message: "Error interno del servidor", error: error.message });
   }
 }
 
 module.exports = {
-  getDrivers
+  getDrivers,
 };

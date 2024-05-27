@@ -1,10 +1,11 @@
-import { FETCH_DRIVERS_SUCCESS, FETCH_DRIVER_SUCCESS, FETCH_DRIVER_FAILURE } from './action-types';
+import { FETCH_DRIVERS_SUCCESS, FETCH_DRIVER_SUCCESS, FETCH_DRIVER_FAILURE, FETCH_NATIONALITIES_SUCCESS } from './action-types';
 
 const initialState = {
   drivers: [],
   selectedDriver: null,
   loading: false,
   error: null,
+  nationalities: [],
 };
 
 const driverReducer = (state = initialState, action) => {
@@ -21,6 +22,14 @@ const driverReducer = (state = initialState, action) => {
         loading: false,
         selectedDriver: action.payload,
       };
+      case FETCH_NATIONALITIES_SUCCESS:
+  return {
+    ...state,
+    loading: false,
+    nationalities: action.payload,
+  };
+
+      
     case FETCH_DRIVER_FAILURE:
       return {
         ...state,
@@ -31,5 +40,6 @@ const driverReducer = (state = initialState, action) => {
       return state;
   }
 };
+
 
 export default driverReducer;
