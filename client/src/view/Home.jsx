@@ -43,13 +43,14 @@ const Home = () => {
   const sortedDrivers = filteredDrivers && filteredDrivers.length > 0 ? filteredDrivers.sort((a, b) => {
     if (sortBy === 'name') {
       const nameA = (a.name && a.name.forename) ? a.name.forename.toLowerCase() : '';
-      const nameB = (b.name && b.name.forename) ? a.name.forename.toLowerCase() : '';
+      const nameB = (b.name && b.name.forename) ? b.name.forename.toLowerCase() : '';
       return ascending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
     } else if (sortBy === 'dob') {
-      const dobA = (a.dob) ? new Date(a.dob) : null;
-      const dobB = (b.dob) ? new Date(b.dob) : null;
+      const dobA = a.dob ? new Date(a.dob) : new Date(0);
+      const dobB = b.dob ? new Date(b.dob) : new Date(0);
       return ascending ? dobA - dobB : dobB - dobA;
     }
+    return 0;
   }) : [];
 
   if (loading) return <p>Loading...</p>;

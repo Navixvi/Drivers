@@ -5,8 +5,8 @@ const { Driver } = require("../db");
 async function getDrivers(req, res) {
   try {
     // Parámetros de consulta para paginación y filtrado
-    const page = parseInt(req.query.page) || 1; // Página solicitada (por defecto, página 1)
-    const limit = parseInt(req.query.limit) || 9; // Tamaño de la página (por defecto, 10 conductores por página)
+    const page = parseInt(req.query.page) || 1; // Página solicitada 
+    const limit = parseInt(req.query.limit) || 9; // Tamaño de la página 
     const team = req.query.team || ''; // Filtro por equipo
     const source = req.query.source || ''; // Filtro por origen (API o DB)
 
