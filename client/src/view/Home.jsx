@@ -99,10 +99,10 @@ const Home = () => {
 
   return (
     <div>
-      <NavBar />
       <div className="home">
         <h1>Drivers</h1>
         <SearchBar setDrivers={setFilteredDrivers} />
+        <NavBar />
         <div>
           <label>Filter by Team:</label>
           <select onChange={handleTeamFilterChange} value={teamFilter}>

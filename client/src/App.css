@@ -1,3 +1,18 @@
+/* Estilos globales */
+body {
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f9f9f9;
+  color: #333;
+  background-image: url('../src/image/General.jpg'); 
+  background-size: cover;
+  background-position: top center; /* Asegura que la parte superior de la imagen esté siempre visible */
+  background-repeat: no-repeat;
+  background-attachment: fixed; 
+}
+
+/* Estilos para la página de aterrizaje */
 .landing-page {
   height: 100vh;
   width: 100vw;
@@ -25,7 +40,7 @@
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  background-color: rgba(187, 255, 0, 0.8);
+  background-color: rgba(251, 255, 0, 0.8);
   border: none;
   border-radius: 5px;
   transition: background-color 0.3s;
@@ -35,21 +50,12 @@
   background-color: rgb(255, 0, 0); 
 }
 
-/* Estilos globales */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #f4f4f4;
-}
-
-/* Contenedor principal */
+/* Estilos para la página principal */
 .home {
   padding: 20px;
   text-align: center;
 }
 
-/* Título de la página */
 .home h1 {
   font-size: 2.5em;
   margin-bottom: 20px;
@@ -62,6 +68,14 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   gap: 20px;
+  margin-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .driver-list {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 /* Tarjeta de conductor */
@@ -80,7 +94,6 @@ body {
   transform: translateY(-5px);
 }
 
-/* Imagen del conductor */
 .card img {
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
@@ -89,14 +102,12 @@ body {
   object-fit: cover;
 }
 
-/* Nombre del conductor */
 .card h2 {
   font-size: 1.5em;
   margin: 10px 0;
   color: #333;
 }
 
-/* Equipo del conductor */
 .card p {
   font-size: 1em;
   color: #777;
@@ -107,12 +118,14 @@ body {
 .pagination {
   display: flex;
   justify-content: center;
+  align-items: center;
   margin: 20px 0;
+  color: white;
 }
 
 .pagination button {
-  background-color: #007bff;
-  color: white;
+  background-color: rgba(251, 255, 0, 0.8);
+  color: rgb(0, 0, 0);
   border: none;
   padding: 10px 20px;
   margin: 0 5px;
@@ -122,7 +135,7 @@ body {
 }
 
 .pagination button:hover {
-  background-color: #0056b3;
+  background-color: rgb(255, 0, 0); 
 }
 
 .pagination button:disabled {
@@ -130,6 +143,7 @@ body {
   cursor: not-allowed;
 }
 
+/* Detalles del conductor */
 .driver-detail {
   max-width: 800px;
   margin: 40px auto;
@@ -168,7 +182,7 @@ body {
   padding: 10px 20px;
   font-size: 16px;
   cursor: pointer;
-  background-color: rgba(187, 255, 0, 0.8);
+  background-color: rgba(251, 255, 0, 0.8);
   border: none;
   border-radius: 5px;
   transition: background-color 0.3s;
@@ -210,15 +224,20 @@ body {
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 5px;
+  box-sizing: border-box; 
 }
 
 .create-form textarea {
-  resize: vertical;
-  height: 100px;
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box; 
 }
 
 .create-form button {
-  background-color: rgba(187, 255, 0, 0.8);
+  background-color: rgba(251, 255, 0, 0.8);
   border: none;
   cursor: pointer;
   transition: background-color 0.3s;
@@ -246,6 +265,7 @@ body {
   margin-bottom: 5px;
 }
 
+/* Barra de búsqueda */
 .search-bar {
   display: flex;
   align-items: center;
@@ -263,17 +283,68 @@ body {
 .search-bar button {
   padding: 10px 20px;
   border: none;
-  background-color: #007bff;
-  color: white;
+  background-color: white;
+  color: rgb(0, 0, 0);
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .search-bar button:disabled {
-  background-color: #007bff99;
+  background-color: rgba(251, 255, 0, 0.8);
 }
 
 .search-bar button:hover:not(:disabled) {
-  background-color: #0056b3;
+  background-color: rgba(251, 255, 0, 0.8);
+}
+
+/* Botones generales */
+.CreateButton, .LandingButton {
+  padding: 10px 20px;
+  border: none;
+  background-color: white;
+  color: rgb(0, 0, 0);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-decoration: none; /* Elimina el subrayado del texto */
+}
+
+.CreateButton:hover, .LandingButton:hover {
+  background-color: rgba(251, 255, 0, 0.8);
+  color: #000000;
+}
+
+
+.CreateButton {
+  margin-right: 10px;
+}
+
+.LandingButton {
+  margin-left: 10px;
+}
+
+button:hover {
+  background-color: rgba(251, 255, 0, 0.8);
+  color: #000000;
+}
+
+select, button {
+  padding: 10px;
+  margin: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #ffffff;
+  transition: background-color 0.3s, border-color 0.3s;
+}
+
+select:focus, button:focus {
+  outline: none;
+}
+
+label {
+  margin-right: 10px;
+  font-size: 1rem;
+  color: #555;
 }

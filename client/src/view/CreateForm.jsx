@@ -5,7 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const CreateForm = () => {
-  const [formData, setFormData] = useState({
+  const initialState = {
     name: '', 
     lastName: '', 
     nationality: '',
@@ -13,16 +13,15 @@ const CreateForm = () => {
     dob: '',
     description: '',
     teams: [],
-  });
+  };
 
+  const [formData, setFormData] = useState(initialState);
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
+  const [successMessage, setSuccessMessage] = useState('');
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const handleClick = () => {
-    navigate('/home');
-  };
 
   useEffect(() => {
     fetchTeams();
@@ -72,11 +71,21 @@ const CreateForm = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
-      dispatch(createDriver(formData));
+      try {
+        await dispatch(createDriver(formData));
+        setSuccessMessage('Driver Succesfully Created');
+        setFormData(initialState); // Limpiar campos del formulario
+      } catch (error) {
+        console.error('Error creating driver:', error);
+      }
     }
+  };
+
+  const handleClick = () => {
+    navigate('/home');
   };
 
   if (loading) return <p>Loading...</p>;
@@ -161,7 +170,8 @@ const CreateForm = () => {
         </div>
         <button type="submit">Crear Conductor</button>
       </form>
-        <button onClick={handleClick}>Volver a Home</button>
+      {successMessage && <p>{successMessage}</p>}
+      <button onClick={handleClick}>Volver a Home</button>
     </div>
   );
 };
