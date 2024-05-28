@@ -33,7 +33,7 @@ async function createDriver(req, res) {
 
     // Devolver el nuevo conductor creado junto con los equipos asociados
     const driverWithTeams = await Driver.findByPk(newDriver.id, {
-      include: Team // Incluir los equipos asociados en la respuesta
+      include: { model: Team, attributes: ['name'] } // Incluir los equipos asociados en la respuesta
     });
 
     // Responder con el nuevo conductor y los equipos asociados

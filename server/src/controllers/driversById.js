@@ -1,16 +1,25 @@
 const axios = require('axios');
-const { Driver } = require('../db');
+const { Driver, Team } = require('../db'); // Asegúrate de importar el modelo Team
 
 // Controlador para obtener el detalle de un conductor por ID
 async function getDriverById(req, res) {
   const driverId = req.params.idDriver;
 
   try {
-    // Buscar el conductor en la base de datos por ID
-    const driverFromDB = await Driver.findByPk(driverId);
+    // Buscar el conductor en la base de datos por ID, incluyendo los equipos asociados
+    const driverFromDB = await Driver.findByPk(driverId, {
+      include: {
+        model: Team,
+        as: 'Teams',
+        attributes: ['name']
+      }
+    });
 
     // Si el conductor se encuentra en la base de datos, devolverlo
     if (driverFromDB) {
+      // Formatear equipos de la base de datos
+      const teamsFromDB = driverFromDB.Teams.map(team => team.name);
+      driverFromDB.dataValues.teams = teamsFromDB; // Agregar los equipos al objeto driver
       return res.json(driverFromDB);
     }
 

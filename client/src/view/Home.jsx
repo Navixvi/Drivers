@@ -77,7 +77,7 @@ const Home = () => {
   const handleNationalityFilterChange = (e) => {
     setNationalityFilter(e.target.value);
   };
-  console.log("Nationalities:", nationalities);
+
 
   
 

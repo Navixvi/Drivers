@@ -20,10 +20,10 @@ const Detail = () => {
   if (!driver) return <p className="loading">Loading...</p>;
   if (driver.error) return <p className="error">Error: {driver.error}</p>;
 
-  const imageUrl = driver.image.url || driver.image;
-  const name = driver.name.forename && driver.name.surname ? `${driver.name.forename} ${driver.name.surname}` : `${driver.name} ${driver.lastName}`;
+  const imageUrl = driver.image?.url || driver.image;
+  const name = driver.name?.forename && driver.name?.surname ? `${driver.name.forename} ${driver.name.surname}` : `${driver.name} ${driver.lastName}`;
   const dob = driver.dob || driver.birthDate;
-  const teams = Array.isArray(driver.teams) ? driver.teams.map(team => team.name).join(', ') : driver.teams;
+  const teams = Array.isArray(driver.teams) ? driver.teams.join(', ') : driver.teams;
 
   return (
     <div className="driver-detail">
