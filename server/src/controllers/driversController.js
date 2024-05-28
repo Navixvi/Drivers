@@ -7,7 +7,7 @@ async function getDrivers(req, res) {
     const limit = parseInt(req.query.limit) || 9;
     const team = req.query.team || '';
     const source = req.query.source || '';
-    let nationality = req.query.nationality || '';
+    const nationality = req.query.nationality || '';
 
     const startIndex = (page - 1) * limit;
     const endIndex = page * limit;
@@ -16,13 +16,25 @@ async function getDrivers(req, res) {
     const dbOptions = {
       offset: startIndex,
       limit: limit,
-      include: Team, // Incluir los equipos asociados
+      include: {
+        model: Team,
+        as: 'Teams',
+        attributes: ['name'],
+        through: {
+          attributes: [],
+        },
+      },
       where: {},
     };
 
     // Filtrar por equipo si se proporciona
     if (team) {
-      dbOptions.where['$Teams.name$'] = team;
+      dbOptions.include.where = { name: team };
+    }
+
+    // Filtrar por nacionalidad si se proporciona
+    if (nationality) {
+      dbOptions.where.nationality = nationality;
     }
 
     // Obtener conductores de la base de datos
@@ -41,11 +53,12 @@ async function getDrivers(req, res) {
       }
     }));
 
-    // Filtrar conductores por equipo si se proporciona
+    // Filtrar conductores de la API por equipo si se proporciona
     if (team) {
-      driversFromAPI = driversFromAPI.filter(driver => driver.teams.includes(team));    
+      driversFromAPI = driversFromAPI.filter(driver => driver.teams.includes(team));
     }
-    
+
+    // Filtrar conductores de la API por nacionalidad si se proporciona
     if (nationality) {
       driversFromAPI = driversFromAPI.filter(driver => driver.nationality.toLowerCase() === nationality.toLowerCase());
     }
