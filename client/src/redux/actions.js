@@ -51,7 +51,6 @@ export const createDriver = (driverData) => async (dispatch) => {
   try {
     const response = await axios.post('http://localhost:3001/drivers', driverData);
     console.log('Driver created successfully:', response.data);
-    // Opcionalmente, podrías despachar otra acción aquí para actualizar el estado de la aplicación después de crear el conductor.
   } catch (error) {
     console.error('Error creating driver:', error);
   }

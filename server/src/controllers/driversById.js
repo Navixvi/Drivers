@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { Driver, Team } = require('../db'); // Asegúrate de importar el modelo Team
+const { Driver, Team } = require('../db'); 
 
 // Controlador para obtener el detalle de un conductor por ID
 async function getDriverById(req, res) {

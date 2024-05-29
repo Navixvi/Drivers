@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { Driver } = require('../db');
-const { Op, fn, col } = require('sequelize');
+const { Op } = require('sequelize');
 
 const getDriversByName = async (req, res) => {
   const { name } = req.query;
@@ -33,7 +33,7 @@ const getDriversByName = async (req, res) => {
           },
           {
             lastName: {
-              [Op.iLike]: `%${name}%`, // Usar iLike para insensibilidad a mayúsculas/minúsculas
+              [Op.iLike]: `%${name}%`, 
             },
           },
         ],

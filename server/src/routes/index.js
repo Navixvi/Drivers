@@ -28,6 +28,7 @@ router.post("/drivers", createDriver);
 // Obtiene una lista de equipos, ya sea de la base de datos o de la API externa si la base de datos está vacía
 router.get("/teams", getTeams);
 
+// Ruta para las nacionalidades 
 router.get('/nationalities', getNationalities);
 
 module.exports = router;

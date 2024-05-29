@@ -8,27 +8,32 @@ import axios from 'axios';
 
 const Home = () => {
   const dispatch = useDispatch();
+
+  // Extrayendo el estado de los conductores y la paginación del store
   const { drivers, totalPages, loading, error } = useSelector((state) => state.drivers || { drivers: [], totalPages: 1, loading: false, error: null });
+
+  // Estado local para la página actual y filtros
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredDrivers, setFilteredDrivers] = useState([]);
   const [sortBy, setSortBy] = useState('name');
   const [ascending, setAscending] = useState(true);
   const [teamFilter, setTeamFilter] = useState('');
   const [sourceFilter, setSourceFilter] = useState('');
-  const [teams, setTeams] = useState([]); // Estado para almacenar los equipos
+  const [teams, setTeams] = useState([]);
   const [nationalityFilter, setNationalityFilter] = useState('');
   const [nationalities, setNationalities] = useState([]);
 
+  // Efecto para cargar conductores al montar el componente o cambiar filtros
   useEffect(() => {
     dispatch(fetchAllDrivers(currentPage, teamFilter, sourceFilter, nationalityFilter));
   }, [dispatch, currentPage, teamFilter, sourceFilter, nationalityFilter]);
 
+  // Actualizar conductores filtrados cuando cambie el estado de los conductores
   useEffect(() => {
     setFilteredDrivers(drivers);
-    console.log(drivers);
   }, [drivers]);
 
-  // Llama a la función para obtener los equipos al cargar el componente
+  // Efecto para cargar equipos al montar el componente
   useEffect(() => {
     const fetchTeams = async () => {
       try {
@@ -41,6 +46,7 @@ const Home = () => {
     fetchTeams();
   }, []);
 
+  // Efecto para cargar nacionalidades al montar el componente
   useEffect(() => {
     const fetchNationalitiesData = async () => {
       try {
@@ -53,7 +59,7 @@ const Home = () => {
     fetchNationalitiesData();
   }, []);
   
-
+  // Funciones para manejar la paginación
   const handlePrevPage = () => {
     setCurrentPage(prevPage => prevPage - 1);
   };
@@ -62,6 +68,7 @@ const Home = () => {
     setCurrentPage(prevPage => prevPage + 1);
   };
 
+  // Función para manejar el ordenamiento
   const handleSort = (type) => {
     if (type === sortBy) {
       setAscending(prev => !prev);
@@ -71,6 +78,7 @@ const Home = () => {
     }
   };
 
+  // Funciones para manejar cambios en los filtros
   const handleTeamFilterChange = (e) => {
     setTeamFilter(e.target.value);
   };
@@ -79,9 +87,7 @@ const Home = () => {
     setNationalityFilter(e.target.value);
   };
 
-
-  
-
+  // Ordenar conductores según el tipo y el orden seleccionados
   const sortedDrivers = filteredDrivers && filteredDrivers.length > 0 ? filteredDrivers.sort((a, b) => {
     if (sortBy === 'name') {
       const nameA = (a.name && a.name.forename) ? a.name.forename.toLowerCase() : '';
@@ -95,10 +101,11 @@ const Home = () => {
     return 0;
   }) : [];
 
+  // Manejo de estados de carga y error
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
- 
 
+  // Renderizar la página principal
   return (
     <div>
       <div className="home">
@@ -114,12 +121,12 @@ const Home = () => {
             ))}
           </select>
           <label>Filter by Nationality:</label>
-<select onChange={handleNationalityFilterChange} value={nationalityFilter}>
-  <option value="">All</option>
-  {nationalities.map(nationality => (
-    <option key={nationality} value={nationality}>{nationality}</option>
-  ))}
-</select>
+          <select onChange={handleNationalityFilterChange} value={nationalityFilter}>
+            <option value="">All</option>
+            {nationalities.map(nationality => (
+              <option key={nationality} value={nationality}>{nationality}</option>
+            ))}
+          </select>
           <label>Filter by Source:</label>
           <select onChange={(e) => setSourceFilter(e.target.value)}>
             <option value="">All</option>
@@ -143,7 +150,6 @@ const Home = () => {
         </div>
       </div>
     </div>
-    
   );
 };
 

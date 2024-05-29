@@ -1,12 +1,12 @@
 const { DataTypes } = require('sequelize');
-const { v4: uuidv4 } = require('uuid'); // Importar la función uuidv4 para generar UUIDs
+const { v4: uuidv4 } = require('uuid'); 
 
 module.exports = (sequelize) => {
   sequelize.define('Driver', {
     id: {
-      type: DataTypes.STRING, // Cambiar el tipo de dato a STRING para utilizar UUIDs
+      type: DataTypes.STRING, 
       primaryKey: true,
-      defaultValue: () => uuidv4() // Establecer un valor predeterminado utilizando uuidv4()
+      defaultValue: () => uuidv4() 
     },
     name: {
       type: DataTypes.STRING,

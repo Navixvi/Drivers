@@ -5,6 +5,7 @@ import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 
 const CreateForm = () => {
+  // Estado inicial del formulario
   const initialState = {
     name: '', 
     lastName: '', 
@@ -23,6 +24,7 @@ const CreateForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // Obtener la lista de equipos al montar el componente
   useEffect(() => {
     fetchTeams();
   }, []);
@@ -38,6 +40,7 @@ const CreateForm = () => {
     }
   };
 
+  // Validaciones del formulario
   const validate = () => {
     const newErrors = {};
     if (!formData.name.match(/^[a-zA-Z]+$/)) {
@@ -62,21 +65,25 @@ const CreateForm = () => {
     return Object.keys(newErrors).length === 0;
   };
 
+  // Manejo de cambios en el formulario
   const handleChange = (e) => {
     const { name, value, options } = e.target;
-    const newValue = name === 'teams' ? Array.from(options).filter(option => option.selected).map(option => option.value) : value;
+    const newValue = name === 'teams' ? 
+      Array.from(options).filter(option => option.selected).map(option => option.value) 
+      : value;
     setFormData({
       ...formData,
       [name]: newValue,
     });
   };
 
+  // Manejo del envío del formulario
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validate()) {
       try {
         await dispatch(createDriver(formData));
-        setSuccessMessage('Driver Succesfully Created');
+        setSuccessMessage('Driver Successfully Created');
         setFormData(initialState); // Limpiar campos del formulario
       } catch (error) {
         console.error('Error creating driver:', error);
@@ -84,10 +91,12 @@ const CreateForm = () => {
     }
   };
 
+  // Manejo del clic para volver a home
   const handleClick = () => {
     navigate('/home');
   };
 
+  // Mostrar mensaje de carga mientras se obtienen los equipos
   if (loading) return <p>Loading...</p>;
 
   return (
