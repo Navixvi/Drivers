@@ -59,7 +59,7 @@ async function getDrivers(req, res) {
 
     driversFromAPI = driversFromAPI.map(driver => ({
       ...driver,
-      image: driver.image || defaultImage,
+      image: driver.image && driver.image.url ? driver.image : defaultImage,  // Usar defaultImage si no hay una imagen definida
       teams: driver.teams || []  // Asegurarse de que `teams` esté definido
     }));
 

@@ -25,6 +25,7 @@ const Home = () => {
 
   useEffect(() => {
     setFilteredDrivers(drivers);
+    console.log(drivers);
   }, [drivers]);
 
   // Llama a la función para obtener los equipos al cargar el componente
@@ -96,6 +97,7 @@ const Home = () => {
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
+ 
 
   return (
     <div>

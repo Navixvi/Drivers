@@ -1,6 +1,6 @@
 const axios = require('axios');
 const { Driver } = require('../db');
-const { Op } = require('sequelize');
+const { Op, fn, col } = require('sequelize');
 
 const getDriversByName = async (req, res) => {
   const { name } = req.query;
@@ -11,7 +11,7 @@ const getDriversByName = async (req, res) => {
   }
 
   try {
-    // Buscar en la API (considera añadir soporte de búsqueda en la API externa si es posible)
+    // Buscar en la API
     const apiUrl = `http://localhost:5000/drivers`;
     const response = await axios.get(apiUrl);
     const apiDrivers = response.data;
@@ -28,12 +28,12 @@ const getDriversByName = async (req, res) => {
         [Op.or]: [
           {
             name: {
-              [Op.substring]: name,
+              [Op.iLike]: `%${name}%`, // Usar iLike para insensibilidad a mayúsculas/minúsculas
             },
           },
           {
             lastName: {
-              [Op.substring]: name,
+              [Op.iLike]: `%${name}%`, // Usar iLike para insensibilidad a mayúsculas/minúsculas
             },
           },
         ],
