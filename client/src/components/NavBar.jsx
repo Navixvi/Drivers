@@ -1,12 +1,15 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 const NavBar = () => {
   return (
     <nav>
       <ul>
-        <Link to="/driver/create" className="CreateButton">Crear Conductor</Link>
-        <Link to="/"  className="LandingButton">Landing Page</Link>
+        <Link to="/driver/create" className="CreateButton">
+          Create driver
+        </Link>
+        <Link to="/" className="LandingButton">
+          Landing Page
+        </Link>
       </ul>
     </nav>
   );

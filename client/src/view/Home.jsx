@@ -1,26 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchAllDrivers } from '../redux/actions';
-import Card from '../components/Card';
-import NavBar from '../components/NavBar';
-import SearchBar from '../components/SearchBar';
-import axios from 'axios'; 
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchAllDrivers } from "../redux/actions";
+import Card from "../components/Card";
+import NavBar from "../components/NavBar";
+import SearchBar from "../components/SearchBar";
+import axios from "axios";
 
 const Home = () => {
   const dispatch = useDispatch();
 
   // Extrayendo el estado de los conductores y la paginación del store
-  const { drivers, totalPages, loading, error } = useSelector((state) => state.drivers || { drivers: [], totalPages: 1, loading: false, error: null });
+  const { drivers, totalPages, loading, error } = useSelector(
+    (state) => state.drivers || { drivers: [], totalPages: 1, loading: false, error: null }
+  );
 
   // Estado local para la página actual y filtros
   const [currentPage, setCurrentPage] = useState(1);
   const [filteredDrivers, setFilteredDrivers] = useState([]);
-  const [sortBy, setSortBy] = useState('name');
+  const [sortBy, setSortBy] = useState("name");
   const [ascending, setAscending] = useState(true);
-  const [teamFilter, setTeamFilter] = useState('');
-  const [sourceFilter, setSourceFilter] = useState('');
+  const [teamFilter, setTeamFilter] = useState("");
+  const [sourceFilter, setSourceFilter] = useState("");
   const [teams, setTeams] = useState([]);
-  const [nationalityFilter, setNationalityFilter] = useState('');
+  const [nationalityFilter, setNationalityFilter] = useState("");
   const [nationalities, setNationalities] = useState([]);
 
   // Efecto para cargar conductores al montar el componente o cambiar filtros
@@ -37,10 +39,10 @@ const Home = () => {
   useEffect(() => {
     const fetchTeams = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/teams');
+        const response = await axios.get("http://localhost:3001/teams");
         setTeams(response.data);
       } catch (error) {
-        console.error('Error fetching teams:', error);
+        console.error("Error fetching teams:", error);
       }
     };
     fetchTeams();
@@ -50,28 +52,28 @@ const Home = () => {
   useEffect(() => {
     const fetchNationalitiesData = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/nationalities');
+        const response = await axios.get("http://localhost:3001/nationalities");
         setNationalities(response.data);
       } catch (error) {
-        console.error('Error fetching nationalities:', error);
+        console.error("Error fetching nationalities:", error);
       }
     };
     fetchNationalitiesData();
   }, []);
-  
+
   // Funciones para manejar la paginación
   const handlePrevPage = () => {
-    setCurrentPage(prevPage => prevPage - 1);
+    setCurrentPage((prevPage) => prevPage - 1);
   };
 
   const handleNextPage = () => {
-    setCurrentPage(prevPage => prevPage + 1);
+    setCurrentPage((prevPage) => prevPage + 1);
   };
 
   // Función para manejar el ordenamiento
   const handleSort = (type) => {
     if (type === sortBy) {
-      setAscending(prev => !prev);
+      setAscending((prev) => !prev);
     } else {
       setSortBy(type);
       setAscending(true);
@@ -88,18 +90,21 @@ const Home = () => {
   };
 
   // Ordenar conductores según el tipo y el orden seleccionados
-  const sortedDrivers = filteredDrivers && filteredDrivers.length > 0 ? filteredDrivers.sort((a, b) => {
-    if (sortBy === 'name') {
-      const nameA = (a.name && a.name.forename) ? a.name.forename.toLowerCase() : '';
-      const nameB = (b.name && b.name.forename) ? b.name.forename.toLowerCase() : '';
-      return ascending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
-    } else if (sortBy === 'dob') {
-      const dobA = a.dob ? new Date(a.dob) : new Date(0);
-      const dobB = b.dob ? new Date(b.dob) : new Date(0);
-      return ascending ? dobA - dobB : dobB - dobA;
-    }
-    return 0;
-  }) : [];
+  const sortedDrivers =
+    filteredDrivers && filteredDrivers.length > 0
+      ? filteredDrivers.sort((a, b) => {
+          if (sortBy === "name") {
+            const nameA = a.name && a.name.forename ? a.name.forename.toLowerCase() : "";
+            const nameB = b.name && b.name.forename ? b.name.forename.toLowerCase() : "";
+            return ascending ? nameA.localeCompare(nameB) : nameB.localeCompare(nameA);
+          } else if (sortBy === "dob") {
+            const dobA = a.dob ? new Date(a.dob) : new Date(0);
+            const dobB = b.dob ? new Date(b.dob) : new Date(0);
+            return ascending ? dobA - dobB : dobB - dobA;
+          }
+          return 0;
+        })
+      : [];
 
   // Manejo de estados de carga y error
   if (loading) return <p>Loading...</p>;
@@ -116,15 +121,19 @@ const Home = () => {
           <label>Filter by Team:</label>
           <select onChange={handleTeamFilterChange} value={teamFilter}>
             <option value="">All</option>
-            {teams.map(team => (
-              <option key={team.id} value={team.name}>{team.name}</option>
+            {teams.map((team) => (
+              <option key={team.id} value={team.name}>
+                {team.name}
+              </option>
             ))}
           </select>
           <label>Filter by Nationality:</label>
           <select onChange={handleNationalityFilterChange} value={nationalityFilter}>
             <option value="">All</option>
-            {nationalities.map(nationality => (
-              <option key={nationality} value={nationality}>{nationality}</option>
+            {nationalities.map((nationality) => (
+              <option key={nationality} value={nationality}>
+                {nationality}
+              </option>
             ))}
           </select>
           <label>Filter by Source:</label>
@@ -135,8 +144,12 @@ const Home = () => {
           </select>
         </div>
         <div>
-          <button onClick={() => handleSort('name')}>Sort by Name {sortBy === 'name' && (ascending ? '↑' : '↓')}</button>
-          <button onClick={() => handleSort('dob')}>Sort by DOB {sortBy === 'dob' && (ascending ? '↑' : '↓')}</button>
+          <button onClick={() => handleSort("name")}>
+            Sort by Name {sortBy === "name" && (ascending ? "↑" : "↓")}
+          </button>
+          <button onClick={() => handleSort("dob")}>
+            Sort by DOB {sortBy === "dob" && (ascending ? "↑" : "↓")}
+          </button>
         </div>
         <div className="driver-list">
           {sortedDrivers.map((driver) => (
@@ -144,9 +157,15 @@ const Home = () => {
           ))}
         </div>
         <div className="pagination">
-          <button onClick={handlePrevPage} disabled={currentPage === 1}>Prev</button>
-          <span>{currentPage} of {totalPages}</span>
-          <button onClick={handleNextPage} disabled={currentPage === totalPages}>Next</button>
+          <button onClick={handlePrevPage} disabled={currentPage === 1}>
+            Prev
+          </button>
+          <span>
+            {currentPage} of {totalPages}
+          </span>
+          <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+            Next
+          </button>
         </div>
       </div>
     </div>

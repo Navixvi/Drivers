@@ -1,18 +1,18 @@
-import React, { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
-import { createDriver } from '../redux/actions';
-import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { createDriver } from "../redux/actions";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CreateForm = () => {
   // Estado inicial del formulario
   const initialState = {
-    name: '', 
-    lastName: '', 
-    nationality: '',
-    image: '',
-    dob: '',
-    description: '',
+    name: "",
+    lastName: "",
+    nationality: "",
+    image: "",
+    dob: "",
+    description: "",
     teams: [],
   };
 
@@ -20,7 +20,7 @@ const CreateForm = () => {
   const [teams, setTeams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [errors, setErrors] = useState({});
-  const [successMessage, setSuccessMessage] = useState('');
+  const [successMessage, setSuccessMessage] = useState("");
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -31,11 +31,11 @@ const CreateForm = () => {
 
   const fetchTeams = async () => {
     try {
-      const response = await axios.get('http://localhost:3001/teams');
+      const response = await axios.get("http://localhost:3001/teams");
       setTeams(response.data);
       setLoading(false);
     } catch (error) {
-      console.error('Error fetching teams:', error);
+      console.error("Error fetching teams:", error);
       setLoading(false);
     }
   };
@@ -44,23 +44,24 @@ const CreateForm = () => {
   const validate = () => {
     const newErrors = {};
     if (!formData.name.match(/^[a-zA-Z]+$/)) {
-      newErrors.name = 'Nombre solo debe contener letras';
+      newErrors.name = "Nombre solo debe contener letras";
     }
     if (!formData.lastName.match(/^[a-zA-Z]+$/)) {
-      newErrors.lastName = 'Apellido solo debe contener letras';
+      newErrors.lastName = "Apellido solo debe contener letras";
     }
     if (!formData.nationality.match(/^[a-zA-Z]+$/)) {
-      newErrors.nationality = 'Nacionalidad solo debe contener letras';
+      newErrors.nationality = "Nacionalidad solo debe contener letras";
     }
     if (!formData.dob) {
-      newErrors.dob = 'Fecha de Nacimiento es requerida';
+      newErrors.dob = "Fecha de Nacimiento es requerida";
     }
     if (!formData.description) {
-      newErrors.description = 'Descripción es requerida';
+      newErrors.description = "Descripción es requerida";
     }
     if (formData.teams.length === 0) {
-      newErrors.teams = 'Debes agregar al menos una escudería';
+      newErrors.teams = "Debes agregar al menos una escudería";
     }
+
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -68,9 +69,12 @@ const CreateForm = () => {
   // Manejo de cambios en el formulario
   const handleChange = (e) => {
     const { name, value, options } = e.target;
-    const newValue = name === 'teams' ? 
-      Array.from(options).filter(option => option.selected).map(option => option.value) 
-      : value;
+    const newValue =
+      name === "teams"
+        ? Array.from(options)
+            .filter((option) => option.selected)
+            .map((option) => option.value)
+        : value;
     setFormData({
       ...formData,
       [name]: newValue,
@@ -83,17 +87,17 @@ const CreateForm = () => {
     if (validate()) {
       try {
         await dispatch(createDriver(formData));
-        setSuccessMessage('Driver Successfully Created');
+        setSuccessMessage("Driver Successfully Created");
         setFormData(initialState); // Limpiar campos del formulario
       } catch (error) {
-        console.error('Error creating driver:', error);
+        console.error("Error creating driver:", error);
       }
     }
   };
 
   // Manejo del clic para volver a home
   const handleClick = () => {
-    navigate('/home');
+    navigate("/home");
   };
 
   // Mostrar mensaje de carga mientras se obtienen los equipos
@@ -105,22 +109,12 @@ const CreateForm = () => {
       <form onSubmit={handleSubmit}>
         <div>
           <label>Nombre</label>
-          <input
-            type="text"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-          />
+          <input type="text" name="name" value={formData.name} onChange={handleChange} />
           {errors.name && <p className="error">{errors.name}</p>}
         </div>
         <div>
           <label>Apellido</label>
-          <input
-            type="text"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-          />
+          <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} />
           {errors.lastName && <p className="error">{errors.lastName}</p>}
         </div>
         <div>
@@ -135,40 +129,21 @@ const CreateForm = () => {
         </div>
         <div>
           <label>Imagen</label>
-          <input
-            type="text"
-            name="image"
-            value={formData.image}
-            onChange={handleChange}
-          />
+          <input type="text" name="image" value={formData.image} onChange={handleChange} />
         </div>
         <div>
           <label>Fecha de Nacimiento</label>
-          <input
-            type="date"
-            name="dob"
-            value={formData.dob}
-            onChange={handleChange}
-          />
+          <input type="date" name="dob" value={formData.dob} onChange={handleChange} />
           {errors.dob && <p className="error">{errors.dob}</p>}
         </div>
         <div>
           <label>Descripción</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-          />
+          <textarea name="description" value={formData.description} onChange={handleChange} />
           {errors.description && <p className="error">{errors.description}</p>}
         </div>
         <div>
           <label>Escuderías</label>
-          <select
-            name="teams"
-            value={formData.teams}
-            onChange={handleChange}
-            multiple
-          >
+          <select name="teams" value={formData.teams} onChange={handleChange} multiple>
             {teams.map((team) => (
               <option key={team.id} value={team.id}>
                 {team.name}
